@@ -1,4 +1,4 @@
-import { AbsoluteCenter, Box, Divider, Heading } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Divider, Heading, Text } from "@chakra-ui/react";
 import MessageGenerator from "./components/MessageGenerator";
 import CurrentDayTask from "./components/CurrentDayTask";
 import OtherDaysTasks from "./components/OtherDaysTasks";
@@ -13,14 +13,14 @@ function App() {
       <Box position="relative" py={8}>
         <Divider />
         <AbsoluteCenter bg="vicky.900" px="4">
-          Today's tasks
+          <Text align="center">Today's tasks</Text>
         </AbsoluteCenter>
       </Box>
       <CurrentDayTask />
       <Box position="relative" py={8}>
         <Divider />
         <AbsoluteCenter bg="vicky.900" px="4">
-          Previous days tasks
+          <Text align="center">Previous days tasks</Text>
         </AbsoluteCenter>
       </Box>
       <OtherDaysTasks />
