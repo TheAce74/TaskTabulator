@@ -172,12 +172,14 @@ export default function CurrentDayTask() {
             </Tr>
           </Thead>
           <Tbody>
-            {Object.keys(durationsList).map((duration) => (
+            {Object.keys(durationsList).map((duration, index) => (
               <Tr key={duration}>
                 <Td>{getDuration(Number(duration))}</Td>
                 <Td>
                   <Box display="flex" gap={4} alignItems="center">
-                    <Text>{durationsList[Number(duration)]}</Text>
+                    <Text data-testid={`display${index + 1}`}>
+                      {durationsList[Number(duration)]}
+                    </Text>
                     <Button
                       bg="vicky.600"
                       color="vicky.100"
@@ -194,6 +196,7 @@ export default function CurrentDayTask() {
                       onClick={() =>
                         handleDurationsList(Number(duration), "decrement")
                       }
+                      data-testid={`decrement${index + 1}`}
                     >
                       -
                     </Button>
@@ -213,6 +216,7 @@ export default function CurrentDayTask() {
                       onClick={() =>
                         handleDurationsList(Number(duration), "increment")
                       }
+                      data-testid={`increment${index + 1}`}
                     >
                       +
                     </Button>
