@@ -27,11 +27,11 @@ function App() {
         },
       });
     } else {
-      updatedTasks = {
+      updatedTasks = Object.assign({}, tasksList, {
         [customDay]: {
           durations: newDurationsList,
         },
-      } as Tasks;
+      });
     }
     setItem("vicky", updatedTasks);
     setTasksList(updatedTasks);
