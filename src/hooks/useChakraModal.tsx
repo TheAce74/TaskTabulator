@@ -14,18 +14,30 @@ import {
   NumberDecrementStepper,
   Box,
   Text,
+  Heading,
 } from "@chakra-ui/react";
-import { ChakraModal } from "../utils/types";
+import { ChakraModal, Durations, Value } from "../utils/types";
 import { useState } from "react";
+import TaskTable from "../components/TaskTable";
+import { getDuration } from "../utils/getDuration";
+import { getTotal } from "../utils/getTotal";
+import DatePicker from "react-date-picker";
+import { CalendarIcon } from "@chakra-ui/icons";
+import { durations } from "../data/durations";
 
 function useChakraModal(
   openModal: boolean,
   setOpenModal: (bool: boolean) => void,
   { title, type, buttonText, buttonCallback }: ChakraModal
 ) {
+  const durationsObject: Durations = {};
+  durations.forEach((duration) => (durationsObject[duration] = 0));
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+  const [value, onChange] = useState<Value>(null);
+  const [localDurationsList, setLocalDurationsList] =
+    useState<Durations>(durationsObject);
 
   const callback = () => {
     let success: boolean | string;
@@ -39,6 +51,11 @@ function useChakraModal(
         }
         break;
       case "table":
+        success = buttonCallback(localDurationsList, value);
+        if (success) {
+          onChange(null);
+          setLocalDurationsList(durationsObject);
+        }
         break;
       default:
         console.error("Not a valid modal type");
@@ -128,7 +145,33 @@ function useChakraModal(
                   </NumberInput>
                 </Box>
               </>
-            ) : null}
+            ) : (
+              <>
+                <DatePicker
+                  onChange={onChange}
+                  value={value}
+                  calendarIcon={<CalendarIcon />}
+                  clearIcon={null}
+                  dayPlaceholder="dd"
+                  monthPlaceholder="mm"
+                  yearPlaceholder="yyyy"
+                  format="dd/MM/yy"
+                  maxDate={new Date(Date.now() - 8.64e7)}
+                />
+                {value instanceof Date && (
+                  <>
+                    <Heading fontSize="xl" fontWeight={500} marginBlock={6}>
+                      Total time: {getDuration(getTotal(localDurationsList))}
+                    </Heading>
+                    <TaskTable
+                      durationsList={localDurationsList}
+                      isCurrentDay={false}
+                      setDurationsList={setLocalDurationsList}
+                    />
+                  </>
+                )}
+              </>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button
@@ -149,6 +192,7 @@ function useChakraModal(
                 scale: 0.9,
               }}
               onClick={callback}
+              isDisabled={type === "table" ? !(value instanceof Date) : false}
             >
               {buttonText}
             </Button>

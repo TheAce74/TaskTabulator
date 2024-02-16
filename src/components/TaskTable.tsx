@@ -23,14 +23,12 @@ type TaskTableProps = {
   durationsList: Durations;
   isCurrentDay: boolean;
   setDurationsList: (newDurationsList: Durations) => void;
-  modalContent?: ChakraModal;
 };
 
 export default function TaskTable({
   durationsList,
   isCurrentDay,
   setDurationsList,
-  modalContent,
 }: TaskTableProps) {
   const [openAlert, setOpenAlert] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -41,7 +39,7 @@ export default function TaskTable({
   });
   const chakraModalRef = useRef<ChakraModal>({
     title: "",
-    type: "",
+    type: "form",
     buttonText: "",
     buttonCallback: () => "",
   });
@@ -93,17 +91,13 @@ export default function TaskTable({
   };
 
   const handleOpenModal = () => {
-    if (!modalContent) {
-      chakraModalRef.current = {
-        title: "Add Custom Time",
-        type: "form",
-        buttonText: "Add",
-        buttonCallback: (hours: number, minutes: number, seconds: number) =>
-          handleAddCustomTime(hours, minutes, seconds),
-      };
-    } else {
-      chakraModalRef.current = modalContent;
-    }
+    chakraModalRef.current = {
+      title: "Add Custom Time",
+      type: "form",
+      buttonText: "Add",
+      buttonCallback: (hours: number, minutes: number, seconds: number) =>
+        handleAddCustomTime(hours, minutes, seconds),
+    };
     setOpenModal(true);
   };
 

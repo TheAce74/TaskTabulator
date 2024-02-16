@@ -7,6 +7,7 @@ import { useState, useEffect, useMemo } from "react";
 import { getItem, setItem } from "./utils/localStorage";
 import { getCustomToday } from "./utils/getCustomToday";
 import { durations } from "./data/durations";
+import PreviousTasksButton from "./components/PreviousTasksButton";
 
 function App() {
   const [tasksList, setTasksList] = useState<Tasks>({});
@@ -14,18 +15,19 @@ function App() {
     return getCustomToday();
   }, []);
 
-  const setDurationsList = (newDurationsList: Durations) => {
+  const setDurationsList = (newDurationsList: Durations, day?: string) => {
     const tasks = getItem("vicky") as Tasks;
     let updatedTasks: Tasks;
+    const customDay = day ? day : today;
     if (tasks) {
       updatedTasks = Object.assign({}, tasks, {
-        [today]: {
+        [customDay]: {
           durations: newDurationsList,
         },
       });
     } else {
       updatedTasks = {
-        [today]: {
+        [customDay]: {
           durations: newDurationsList,
         },
       } as Tasks;
@@ -73,6 +75,7 @@ function App() {
           <Text align="center">Previous days tasks</Text>
         </AbsoluteCenter>
       </Box>
+      <PreviousTasksButton setDurationsList={setDurationsList} />
       <PreviousDaysTasks tasksList={tasksList} />
     </Box>
   );

@@ -6,15 +6,19 @@ export type Day = {
 
 export type Tasks = Record<string, Day>;
 
+export type ValuePiece = Date | null;
+
+export type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 export type ChakraAlert = {
   status: "success" | "error";
   title: string;
   message: string;
 };
 
-export type ChakraModal = {
+export type ChakraModalForm = {
   title: string;
-  type: "form" | "table" | "";
+  type: "form";
   buttonText: string;
   buttonCallback: (
     hours: number,
@@ -22,3 +26,12 @@ export type ChakraModal = {
     seconds: number
   ) => boolean | "";
 };
+
+export type ChakraModalTable = {
+  title: string;
+  type: "table";
+  buttonText: string;
+  buttonCallback: (newDurationsList: Durations, value: Value) => boolean | "";
+};
+
+export type ChakraModal = ChakraModalForm | ChakraModalTable;
