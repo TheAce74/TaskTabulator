@@ -8,6 +8,7 @@ import { getItem, setItem } from "./utils/localStorage";
 import { getCustomToday } from "./utils/getCustomToday";
 import { durations } from "./data/durations";
 import PreviousTasksButton from "./components/PreviousTasksButton";
+import MonthlyCumulative from "./components/MonthlyCumulative";
 
 function App() {
   const [tasksList, setTasksList] = useState<Tasks>({});
@@ -65,6 +66,7 @@ function App() {
           <Text align="center">Today's tasks</Text>
         </AbsoluteCenter>
       </Box>
+      <MonthlyCumulative tasksList={tasksList} />
       <CurrentDayTask
         durationsList={tasksList[today]?.durations}
         setDurationsList={setDurationsList}
