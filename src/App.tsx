@@ -77,7 +77,10 @@ function App() {
           <Text align="center">Previous days tasks</Text>
         </AbsoluteCenter>
       </Box>
-      <PreviousTasksButton setDurationsList={setDurationsList} />
+      <PreviousTasksButton
+        setDurationsList={setDurationsList}
+        tasksList={tasksList}
+      />
       <PreviousDaysTasks tasksList={tasksList} />
     </Box>
   );

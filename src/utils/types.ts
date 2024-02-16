@@ -25,6 +25,7 @@ export type ChakraModalForm = {
     minutes: number,
     seconds: number
   ) => boolean | "";
+  tasksList?: Tasks;
 };
 
 export type ChakraModalTable = {
@@ -32,6 +33,7 @@ export type ChakraModalTable = {
   type: "table";
   buttonText: string;
   buttonCallback: (newDurationsList: Durations, value: Value) => boolean | "";
+  tasksList: Tasks;
 };
 
 export type ChakraModal = ChakraModalForm | ChakraModalTable;
