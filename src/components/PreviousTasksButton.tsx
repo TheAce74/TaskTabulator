@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { ChakraAlert, ChakraModal, Durations } from "../utils/types";
+import { ChakraAlert, ChakraModal, Durations, Tasks } from "../utils/types";
 import { useChakraModal } from "../hooks/useChakraModal";
 import { format } from "date-fns";
 import { useChakraAlert } from "../hooks/useChakraAlert";
@@ -8,10 +8,12 @@ import { timeout } from "../utils/timeout";
 
 type PreviousTasksButtonProps = {
   setDurationsList: (newDurationsList: Durations, day?: string) => void;
+  tasksList: Tasks;
 };
 
 export default function PreviousTasksButton({
   setDurationsList,
+  tasksList,
 }: PreviousTasksButtonProps) {
   const [openModal, setOpenModal] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -20,6 +22,7 @@ export default function PreviousTasksButton({
     type: "table",
     buttonText: "",
     buttonCallback: () => "",
+    tasksList: {},
   });
   const chakraAlertRef = useRef<ChakraAlert>({
     status: "success",
@@ -29,7 +32,7 @@ export default function PreviousTasksButton({
 
   const handleOpenModal = () => {
     chakraModalRef.current = {
-      title: "Add Previous Task",
+      title: "Add/Edit Previous Task",
       type: "table",
       buttonText: "Add",
       buttonCallback: (newDurationsList, today) => {
@@ -47,6 +50,7 @@ export default function PreviousTasksButton({
         }
         return false;
       },
+      tasksList: tasksList,
     };
     setOpenModal(true);
   };
@@ -66,7 +70,7 @@ export default function PreviousTasksButton({
   return (
     <>
       <Button mb={8} onClick={handleOpenModal}>
-        Add Previous Task
+        Add/Edit Previous Task
       </Button>
       {modal()}
       {alert()}

@@ -24,11 +24,13 @@ import { getTotal } from "../utils/getTotal";
 import DatePicker from "react-date-picker";
 import { CalendarIcon } from "@chakra-ui/icons";
 import { durations } from "../data/durations";
+import { getKeys } from "../utils/getKeys";
+import { format } from "date-fns";
 
 function useChakraModal(
   openModal: boolean,
   setOpenModal: (bool: boolean) => void,
-  { title, type, buttonText, buttonCallback }: ChakraModal
+  { title, type, buttonText, buttonCallback, tasksList }: ChakraModal
 ) {
   const durationsObject: Durations = {};
   durations.forEach((duration) => (durationsObject[duration] = 0));
@@ -60,6 +62,17 @@ function useChakraModal(
       default:
         console.error("Not a valid modal type");
     }
+  };
+
+  const handleChange = (value: Value) => {
+    if (value instanceof Date && tasksList) {
+      const tasksListKeys = getKeys(tasksList);
+      const day = format(value, "PPPP");
+      setLocalDurationsList(
+        tasksListKeys.includes(day) ? tasksList[day].durations : durationsObject
+      );
+    }
+    onChange(value);
   };
 
   const modal = () => {
@@ -148,7 +161,7 @@ function useChakraModal(
             ) : (
               <>
                 <DatePicker
-                  onChange={onChange}
+                  onChange={handleChange}
                   value={value}
                   calendarIcon={<CalendarIcon />}
                   clearIcon={null}
