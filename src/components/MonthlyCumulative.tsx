@@ -16,11 +16,27 @@ export default function MonthlyCumulative({
     .map((day) => parse(day, "PPPP", new Date()))
     .sort(compareDesc);
   const today = parse(getCustomToday(), "PPPP", new Date());
-  const currentMonthDays = tasksListDays.filter(
-    (day) =>
-      day.getMonth() === today.getMonth() &&
-      day.getFullYear() === today.getFullYear()
-  );
+  const currentMonthDays = tasksListDays.filter((day) => {
+    const currentMonth = today.getMonth();
+    const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const currentYear = today.getFullYear();
+    const previousYear = currentYear - 1;
+    return (
+      (day.getMonth() === previousMonth &&
+        day.getDate() >= 20 &&
+        today.getDate() < 20 &&
+        (day.getFullYear() === currentYear ||
+          day.getFullYear() === previousYear)) ||
+      (day.getMonth() === currentMonth &&
+        day.getDate() < 20 &&
+        today.getDate() < 20 &&
+        day.getFullYear() === currentYear) ||
+      (day.getMonth() === currentMonth &&
+        day.getDate() >= 20 &&
+        today.getDate() >= 20 &&
+        day.getFullYear() === currentYear)
+    );
+  });
   const currentMonthTasks = currentMonthDays.reduce(
     (acc, val) =>
       Object.assign(acc, {
@@ -32,7 +48,7 @@ export default function MonthlyCumulative({
 
   return (
     <Heading fontSize="2xl" fontWeight={500} mb={6} data-testid="cumulative">
-      Monthly Cumulative: {cumulative}
+      Monthly Cumulative (20th till 19th): {cumulative}
     </Heading>
   );
 }
