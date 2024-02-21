@@ -18,6 +18,7 @@ import { useChakraAlert } from "../hooks/useChakraAlert";
 import { useChakraModal } from "../hooks/useChakraModal";
 import { getKeys } from "../utils/getKeys";
 import { timeout } from "../utils/timeout";
+import CustomCounter from "./CustomCounter";
 
 type TaskTableProps = {
   durationsList: Durations;
@@ -45,9 +46,15 @@ export default function TaskTable({
   });
   const durationsListKeys = durationsList ? getKeys(durationsList) : [];
 
-  const handleDurationsList = (id: number, type: "increment" | "decrement") => {
+  const handleDurationsList = (
+    id: number,
+    type: "increment" | "decrement",
+    count?: number
+  ) => {
     const newDurationsList = Object.assign({}, durationsList);
-    if (type === "increment") {
+    if (typeof count === "number") {
+      newDurationsList[id] = count;
+    } else if (type === "increment") {
       newDurationsList[id] = newDurationsList[id] + 1;
       if (isCurrentDay)
         reminder(newDurationsList, chakraAlertRef, () => setOpenAlert(true));
@@ -170,6 +177,10 @@ export default function TaskTable({
                     >
                       +
                     </Button>
+                    <CustomCounter
+                      duration={duration}
+                      handleDurationsList={handleDurationsList}
+                    />
                   </Box>
                 </Td>
               </Tr>
