@@ -64,3 +64,12 @@ button:disabled {
 input {
   background-color: transparent;
 }
+
+.link {
+  color: #d0532b;
+  font-weight: 700;
+}
+
+.mb {
+  margin-bottom: 1em;
+}
